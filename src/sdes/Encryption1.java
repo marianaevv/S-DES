@@ -18,21 +18,6 @@ class Encryption1 {
     void SaveParameters(String plaintext, int[] k1, int[] k2) {
         int[] pt = new int[8];
 
-        /*
-         int temp;
-         for(int i=7;i>=0;i--)	
-         {
-         temp = plaintext % 10;
-         pt[i] = temp;
-         if(temp != 0 && temp != 1)
-         {
-         System.out.println("-- Error Occured : please enter valid 8-bit plaintext  ");
-         System.exit(0);
-         return;
-         }      
-         plaintext = plaintext/10;
-         }
-         */
         char c1;
         String ts;
 
@@ -64,14 +49,9 @@ class Encryption1 {
         this.K1 = k1;
         this.K2 = k2;
 
-    //Print1.array(K1,8);
-        //Print1.msg("\n");
-        //Print1.array(K2,8);
+    ;
     }
 
-    /**
-     * perform Initial Permutation in following manner [2 6 3 1 4 8 5 7] *
-     */
     void InitialPermutation() {
         int[] temp = new int[8];
 
@@ -108,13 +88,11 @@ class Encryption1 {
 
     }
 
-    /**
-     * mappingF . arguments 4-bit right-half of plaintext & 8-bit subkey *
-     */
+
     int[] mappingF(int[] R, int[] SK) {
         int[] temp = new int[8];
 
-        // EXPANSION/PERMUTATION [4 1 2 3 2 3 4 1] 
+ 
         temp[0] = R[3];
         temp[1] = R[0];
         temp[2] = R[1];
@@ -128,7 +106,7 @@ class Encryption1 {
         Print1.array(temp, 8);
         Print1.msg("\n");
 
-        // Bit by bit XOR with sub-key
+    
         temp[0] = temp[0] ^ SK[0];
         temp[1] = temp[1] ^ SK[1];
         temp[2] = temp[2] ^ SK[2];
@@ -142,51 +120,50 @@ class Encryption1 {
         Print1.array(temp, 8);
         Print1.msg("\n");
 
-        // S-Boxes
+      
         final int[][] S0 = {{1, 0, 3, 2}, {3, 2, 1, 0}, {0, 2, 1, 3}, {3, 1, 3, 2}};
         final int[][] S1 = {{0, 1, 2, 3}, {2, 0, 1, 3}, {3, 0, 1, 0}, {2, 1, 0, 3}};
 
-        int d11 = temp[0]; // first bit of first half 
-        int d14 = temp[3]; // fourth bit of first half
+        int d11 = temp[0];  
+        int d14 = temp[3]; 
 
-        int row1 = BinaryOp.BinToDec(d11, d14); // for input in s-box S0
+        int row1 = BinaryOp1.BinToDec(d11, d14); 
 
-        int d12 = temp[1]; // second bit of first half
-        int d13 = temp[2]; // third bit of first half      
-        int col1 = BinaryOp.BinToDec(d12, d13); // for input in s-box S0
+        int d12 = temp[1]; 
+        int d13 = temp[2];   
+        int col1 = BinaryOp1.BinToDec(d12, d13); 
 
         int o1 = S0[row1][col1];
 
-        int[] out1 = BinaryOp.DecToBinArr(o1);
+        int[] out1 = BinaryOp1.DecToBinArr(o1);
 
         Print1.msg("S-Box S0: ");
         Print1.array(out1, 2);
         Print1.msg("\n");
 
-        int d21 = temp[4]; // first bit of second half
-        int d24 = temp[7]; // fourth bit of second half
-        int row2 = BinaryOp.BinToDec(d21, d24);
+        int d21 = temp[4];
+        int d24 = temp[7]; 
+        int row2 = BinaryOp1.BinToDec(d21, d24);
 
-        int d22 = temp[5]; // second bit of second half
-        int d23 = temp[6]; // third bit of second half
-        int col2 = BinaryOp.BinToDec(d22, d23);
+        int d22 = temp[5]; 
+        int d23 = temp[6]; 
+        int col2 = BinaryOp1.BinToDec(d22, d23);
 
         int o2 = S1[row2][col2];
 
-        int[] out2 = BinaryOp.DecToBinArr(o2);
+        int[] out2 = BinaryOp1.DecToBinArr(o2);
 
         Print1.msg("S-Box S1: ");
         Print1.array(out2, 2);
         Print1.msg("\n");
 
-        //4 output bits from 2 s-boxes
         int[] out = new int[4];
         out[0] = out1[0];
         out[1] = out1[1];
         out[2] = out2[0];
         out[3] = out2[1];
 
-	  //permutation P4 [2 4 3 1]
+	
         int[] O_Per = new int[4];
         O_Per[0] = out[1];
         O_Per[1] = out[3];
@@ -201,7 +178,7 @@ class Encryption1 {
     }
 
     /**
-     * fK(L, R, SK) = (L (XOR) mappingF(R, SK), R) .. returns 8-bit output*
+     * fK(L, R, SK) = (L (XOR) mappingF(R, SK), R) .. regresa 8-bit de salida*
      */
     int[] functionFk(int[] L, int[] R, int[] SK) {
         int[] temp = new int[4];
@@ -225,7 +202,7 @@ class Encryption1 {
     }
 
     /**
-     * switch function (SW) interchanges the left and right 4 bits *
+     * Funcion switch (SW) cambia los los 4 bits izquierdos y derechos
      */
     int[] switchSW(int[] in) {
 
@@ -251,7 +228,7 @@ class Encryption1 {
         Print1.msg("\n---------------------------------------\n");
         InitialPermutation();
         Print1.msg("\n---------------------------------------\n");
-        //saperate left half & right half from 8-bit pt
+       
         int[] LH = new int[4];
         int[] RH = new int[4];
         LH[0] = pt[0];
@@ -272,7 +249,7 @@ class Encryption1 {
         Print1.array(RH, 4);
         Print1.msg("\n");
 
-        //first round with sub-key K1
+        //Primer ronda con la primer subllave
         int[] r1 = new int[8];
         r1 = functionFk(LH, RH, K1);
 
@@ -280,7 +257,8 @@ class Encryption1 {
         Print1.array(r1, 8);
         Print1.msg("\n");
         Print1.msg("\n---------------------------------------\n");
-        //Switch the left half & right half of about output
+        
+        //Cambia las salidas izquierda y derecha
         int[] temp = new int[8];
         temp = switchSW(r1);
 
@@ -288,7 +266,8 @@ class Encryption1 {
         Print1.array(temp, 8);
         Print1.msg("\n");
         Print1.msg("\n---------------------------------------\n");
-        // again saperate left half & right half for second round
+       
+        //separa otra vez la mitad izquiera y la mitad derecha para la segunda ronda
         LH[0] = temp[0];
         LH[1] = temp[1];
         LH[2] = temp[2];
@@ -307,7 +286,7 @@ class Encryption1 {
         Print1.array(RH, 4);
         Print1.msg("\n");
 
-        //second round with sub-key K2
+        //segunda ronda con la subllave 2
         int[] r2 = new int[8];
         r2 = functionFk(LH, RH, K2);
 
@@ -324,7 +303,7 @@ class Encryption1 {
         Print1.array(this.pt, 8);
         Print1.msg("\n");
 
-        //Encryption done... return 8-bit output .
+        //Termina la encripción y regresa los 8 bit de salida
         return pt;
 
     }
