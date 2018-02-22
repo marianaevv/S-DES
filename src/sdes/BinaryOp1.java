@@ -9,12 +9,8 @@ package sdes;
  *
  * @author maria
  */
-class BinaryOp {
+class BinaryOp1 {
 
-    /**
-     * Gets binary digits as arguments & returns decimal number for example
-     * input args [1,0,0] will return 4 *
-     */
     static int BinToDec(int... bits) {
 
         int temp = 0;
@@ -27,16 +23,7 @@ class BinaryOp {
         return temp;
     }
 
-    /**
-     * gets decimal number as argument and returns array of binary bits for
-     * example input arg [10] will return  [1,0,1,0]*
-     */
     static int[] DecToBinArr(int no) {
-    // 13 1
-        // 6  0
-        // 3  1
-        // 1  1
-        // 0  
 
         if (no == 0) {
             int[] zero = new int[2];
@@ -59,7 +46,6 @@ class BinaryOp {
             temp2[j] = temp[i];
         }
 
-        //because we requires 2-bits as output .. so for adding leading 0
         if (count < 2) {
             temp = new int[2];
             temp[0] = 0;
