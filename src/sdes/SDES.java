@@ -1,5 +1,7 @@
 package sdes;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -13,22 +15,20 @@ public class SDES {
         String pt;
         String key;
         int[] ct = new int[8];
-      
+
         do {
-            System.out.print("(A) Cipher - (B) Decipher");
+            System.out.print("(A) Cipher - (B) Decipher - (C) Find key given pairs");
 
             x = (char) System.in.read();
-        } while (Character.toUpperCase(x) != 'A' && Character.toUpperCase(x) != 'B');
+        } while (Character.toUpperCase(x) != 'A' && Character.toUpperCase(x) != 'B' && Character.toUpperCase(x) != 'C');
 
         if (Character.toUpperCase(x) == 'A') {
 
-      
             System.out.print("Enter 8-bit Plaintext : ");
             pt = sc.next();
 
             System.out.println(" \n ");
 
-          			
             System.out.print("Enter 10-bit Key : ");
             key = sc.next();
 
@@ -45,13 +45,11 @@ public class SDES {
         } else if (Character.toUpperCase(x) == 'B') {
             System.out.println(" \n Decryption  ");
 
- 
             System.out.print("Enter 8-bit Ciphertext : ");
             pt = sc.next();
 
             System.out.println(" \n ");
 
-       			
             System.out.print("Enter 10-bit Key : ");
             key = sc.next();
 
@@ -67,9 +65,15 @@ public class SDES {
             ct = enc.encrypt(pt, KG.getK2(), KG.getK1());
 
             Print1.msg("\n---------------------------------------\n");
+        } else if (Character.toUpperCase(x) == 'C') {
+          
+            Files a = new Files();
+            String s1 = a.leerTxt("C:\\Users\\maria\\Documents\\pares.txt");
+        
+        System.out.println(s1);
+            
         }
 
-      
     }
 
 }
